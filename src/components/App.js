@@ -8,10 +8,16 @@ import ListAppointments from "./ListAppointment";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { myName: "Saheed", appointments: [], lastIndex: 0, formDisplay: false };
+    this.state = {
+      myName: "Saheed",
+      appointments: [],
+      lastIndex: 0,
+      formDisplay: false
+    };
 
     this.deleteAppointment = this.deleteAppointment.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
+    this.addAppointment = this.addAppointment.bind(this);
   }
   componentDidMount() {
     fetch("./data.json")
@@ -30,8 +36,17 @@ class App extends Component {
     tempApts = without(tempApts, apt);
     this.setState({ appointments: tempApts });
   }
-  toggleForm(){
-    this.setState({ formDisplay: !this.state.formDisplay});
+  toggleForm() {
+    this.setState({ formDisplay: !this.state.formDisplay });
+  }
+  addAppointment(apt) {
+    let tempApts = this.state.appointments;
+    apt.aptId = this.state.lastIndex;
+    tempApts.unshift(apt);
+    this.setState({
+      appointments: tempApts,
+      lastIndex: this.state.lastIndex + 1
+    });
   }
   render() {
     return (
@@ -40,7 +55,11 @@ class App extends Component {
           <div className='row'>
             <div className='col-md-12 bg-white'>
               <div className='container'>
-                <AddAppointments formDisplay={this.state.formDisplay} toggleForm={this.toggleForm} />
+                <AddAppointments
+                  formDisplay={this.state.formDisplay}
+                  toggleForm={this.toggleForm}
+                  addAppointment={this.addAppointment}
+                />
                 <SearchAppointments />
                 <ListAppointments
                   appointments={this.state.appointments}
