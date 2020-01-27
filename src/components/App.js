@@ -9,10 +9,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      myName: "Saheed",
       appointments: [],
       formDisplay: false,
-      orderBy: "petName",
+      orderBy: "aptDate",
       orderDir: "asc",
       lastIndex: 0
     };
@@ -20,6 +19,7 @@ class App extends Component {
     this.deleteAppointment = this.deleteAppointment.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
     this.addAppointment = this.addAppointment.bind(this);
+    this.changeOrder = this.changeOrder.bind(this);
   }
   componentDidMount() {
     fetch("./data.json")
@@ -50,6 +50,9 @@ class App extends Component {
       lastIndex: this.state.lastIndex + 1
     });
   }
+  changeOrder() {
+
+  }
   render() {
     let order;
     let filteredApts = this.state.appointments;
@@ -79,7 +82,7 @@ class App extends Component {
                   toggleForm={this.toggleForm}
                   addAppointment={this.addAppointment}
                 />
-                <SearchAppointments />
+                <SearchAppointments orderBy={this.state.orderBy} orderDir={this.state.orderDir} changeOrder={this.changeOrder} />
                 <ListAppointments
                   appointments={filteredApts}
                   deleteAppointment={this.deleteAppointment}
